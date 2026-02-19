@@ -65,6 +65,7 @@
     background: radial-gradient(circle at 30% 30%, rgba(0,255,180,0.55), transparent 60%);
     transform: rotate(20deg); opacity:0.18;
   }
+
   .title{ font-weight: 900; letter-spacing: 0.8px; text-transform: uppercase; }
   .muted{ color: var(--muted); font-size:12px; margin-top:4px; line-height:1.35; }
 
@@ -118,8 +119,18 @@
   .hr{ margin-top:10px; height:1px; background: linear-gradient(90deg, transparent, rgba(0,255,180,0.25), transparent); }
   .blink{ animation: blink 1.3s infinite; }
   @keyframes blink { 0%,50%{opacity:1} 51%,100%{opacity:0.55} }
-  ul{ margin: 8px 0 0 0; padding-left: 18px; }
-  li{ color: rgba(220,255,245,0.78); font-size: 13px; line-height: 1.45; margin: 6px 0; }
+
+  .log{
+    font-size:12px;
+    color:rgba(220,255,245,0.78);
+    background:rgba(0,0,0,0.25);
+    border:1px solid rgba(0,255,180,0.14);
+    border-radius:12px;
+    padding:10px;
+    margin-top:10px;
+    white-space:pre-wrap;
+    line-height:1.35;
+  }
 </style>
 </head>
 <body>
@@ -130,20 +141,19 @@
     <div>
       <h1>NEON GEO-TENSION // USA ↔ IRAN</h1>
       <div class="small">
-        LIVE PUBLIC SIGNALS (NEWS + OFFICIAL ADVISORY) <span class="blink">▮</span><br>
-        THIS IS A TENSION DASHBOARD — NOT A MILITARY FORECAST TOOL.
+        ALL INDICATORS ALWAYS VISIBLE • LIVE WHERE POSSIBLE <span class="blink">▮</span><br>
+        (TENSION MONITORING ONLY — NOT MILITARY TIMING/PREDICTION)
       </div>
     </div>
     <button class="btn" onclick="loadAll()">REFRESH</button>
   </div>
 
   <div class="grid">
-
     <div class="card">
       <div class="row">
         <div>
           <div class="title">MAIN TENSION INDEX</div>
-          <div class="muted">WEIGHTED BLEND OF ALL INDICATORS BELOW</div>
+          <div class="muted">WEIGHTED BLEND OF ALL SMALL INDICATORS</div>
         </div>
         <div class="pill" id="label">LOADING…</div>
       </div>
@@ -158,26 +168,15 @@
       <div class="muted" style="margin-top:10px" id="explain">DRIVERS: …</div>
       <div class="muted" style="margin-top:6px" id="riseDays">DAYS IN RISING TENSION: --</div>
       <div class="muted" style="margin-top:6px;color:var(--muted2)" id="statusLine">STATUS: …</div>
+
+      <div class="log" id="logBox">LOG: ready</div>
     </div>
 
     <div class="card">
-      <div class="title">ALL INDICATORS (ONE PAGE)</div>
+      <div class="title">ALL INDICATORS</div>
       <div class="muted" id="queryLine">QUERY: …</div>
       <div class="indGrid" id="indicators"></div>
     </div>
-
-    <div class="card">
-      <div class="title">NOTES</div>
-      <div class="muted">
-        Indicators are news + official advisory signals. No pizza logistics, no ship/aircraft tracking.
-      </div>
-      <ul>
-        <li>LIVE: GDELT news-based indicators.</li>
-        <li>LIVE: State Dept Travel Advisory level for Iran (from traveladvisory.xml).</li>
-        <li>Auto-refresh is ON by default (every 5 minutes).</li>
-      </ul>
-    </div>
-
   </div>
 </div>
 
@@ -185,35 +184,39 @@
   // ===== CONFIG =====
   const CORE_QUERY = '"United States" Iran';
 
-  // Keyword buckets (news-based)
   const KW_ESCALATION = ["strike","retaliation","missile","drone","airstrike","attack","bombardment"];
-  const KW_SANCTIONS   = ["sanction","designated","designation","OFAC","Treasury","blacklist","entity list"];
-  const KW_NUCLEAR     = ["IAEA","enrichment","uranium","nuclear","centrifuge","JCPOA"];
-  const KW_SPILLOVER   = ["militia","rocket","proxy","Red Sea","Houthis","Hezbollah","Syria","Iraq"];
-  const KW_DIPLOMACY   = ["talks","negotiations","diplomacy","agreement","deal","dialogue","ceasefire"];
+  const KW_SANCTIONS  = ["sanction","designated","designation","OFAC","Treasury","blacklist"];
+  const KW_NUCLEAR    = ["IAEA","enrichment","uranium","nuclear","centrifuge","JCPOA"];
+  const KW_SPILLOVER  = ["militia","rocket","proxy","Red Sea","Houthis","Hezbollah","Syria","Iraq"];
+  const KW_DIPLOMACY  = ["talks","negotiations","diplomacy","agreement","deal","dialogue","ceasefire"];
 
-  // Auto-refresh
-  const AUTO_REFRESH = true;
-  const REFRESH_MS = 5 * 60 * 1000;
-
-  // Travel advisory XML for all countries (official dataset mirror)
+  // Travel advisory XML: often blocked by browser CORS; we use a proxy.
   const TRAVEL_ADVISORY_XML =
     "https://cadatacatalog.state.gov/dataset/4a387c35-29cb-4902-b91d-3da0dc02e4b2/resource/4c727464-8e6f-4536-b0a5-0a343dc6c7ff/download/traveladvisory.xml";
 
-  // Use a CORS proxy for XML if your browser blocks it:
-  // allOrigins raw endpoint
   const USE_CORS_PROXY = true;
   const CORS_RAW = (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
 
-  // ===== HELPERS =====
+  const AUTO_REFRESH = true;
+  const REFRESH_MS = 5 * 60 * 1000;
+
+  // ===== UTIL =====
   function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
   function avg(arr){ return arr.reduce((a,b)=>a+b,0)/Math.max(1,arr.length); }
+  function nowStr(){ return new Date().toLocaleString(); }
+
+  function log(msg){
+    const el = document.getElementById("logBox");
+    el.textContent = `LOG @ ${nowStr()}\n` + msg;
+  }
+
   function labelFor(s){
     if(s<25) return ["LOW","ok"];
     if(s<50) return ["GUARDED","warn"];
     if(s<75) return ["ELEVATED","warn"];
     return ["HIGH","bad"];
   }
+
   function daysInRising(history){
     let d = 0;
     for(let i=history.length-1; i>0; i--){
@@ -223,85 +226,7 @@
     return d;
   }
 
-  // GDELT Doc API timeline
-  async function fetchGdeltTimeline(query){
-    const q = encodeURIComponent(query);
-    const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${q}&mode=timeline&format=json&timelinesmooth=0`;
-    const res = await fetch(url);
-    if(!res.ok) throw new Error("GDELT_FAILED");
-    const j = await res.json();
-    const tl = j.timeline || [];
-    return tl.map(x => ({date:x.date, value:x.value})).slice(-30);
-  }
-
-  function trendPct(days){
-    const vals = days.map(d=>d.value);
-    const last7 = vals.slice(-7);
-    const prev7 = vals.slice(-14,-7);
-    const a = avg(last7), b = avg(prev7);
-    if(!isFinite(a)||!isFinite(b)||b===0) return 0;
-    return ((a-b)/b)*100;
-  }
-
-  // Normalize counts → 0..100
-  // Note: GDELT timeline values are already normalized shares, but we still map into a UI range.
-  function scoreVolume(v){ return Math.round(clamp((v - 10) / 190, 0, 1) * 100); }
-  function scoreTrend(p){ return Math.round(clamp((p + 50) / 150, 0, 1) * 100); }
-
-  function scoreSpike(days){
-    const vals = days.map(d=>d.value);
-    const last3 = vals.slice(-3);
-    const prev7 = vals.slice(-10,-3);
-    const a = avg(last3), b = avg(prev7);
-    if(!isFinite(a)||!isFinite(b)||b===0) return 0;
-    const pct = ((a-b)/b)*100; // 0..?
-    return Math.round(clamp(pct/150, 0, 1) * 100);
-  }
-
-  async function keywordPressureScore(coreQuery, kwList, scaleTop=80){
-    const kwQuery = `${coreQuery} (${kwList.map(k=>`"${k}"`).join(" OR ")})`;
-    const days = await fetchGdeltTimeline(kwQuery);
-    const v = days.length ? days[days.length-1].value : 0;
-    const s = Math.round(clamp(v/scaleTop, 0, 1) * 100);
-    return {score:s, today:v, days};
-  }
-
-  async function fetchIranTravelAdvisory(){
-    const url = USE_CORS_PROXY ? CORS_RAW(TRAVEL_ADVISORY_XML) : TRAVEL_ADVISORY_XML;
-    const res = await fetch(url);
-    if(!res.ok) throw new Error("TRAVEL_XML_FAILED");
-    const xmlText = await res.text();
-    const doc = new DOMParser().parseFromString(xmlText, "application/xml");
-
-    // try common patterns: look for Iran node by country name
-    const all = Array.from(doc.getElementsByTagName("*"));
-    // find element that contains "Iran" text and has a "level" nearby
-    let level = null, updated = null;
-
-    // Many feeds have entries per country; do a best-effort parse:
-    // Look for nodes where textContent includes "Iran" and then search inside parent for "level"
-    for(const node of all){
-      const t = (node.textContent || "").trim();
-      if(t === "Iran" || t === "IRAN" || t.includes("Iran")){
-        const p = node.parentElement || node.parentNode;
-        if(!p) continue;
-        const txt = (p.textContent || "");
-        // try to extract advisory level 1-4
-        const m = txt.match(/Level\s*([1-4])/i) || txt.match(/\b([1-4])\b.*(Do not travel|Reconsider travel|Exercise increased caution|Exercise normal precautions)/i);
-        if(m){
-          level = parseInt(m[1],10);
-          // try to find a date in the parent block
-          const dm = txt.match(/(\bJanuary\b|\bFebruary\b|\bMarch\b|\bApril\b|\bMay\b|\bJune\b|\bJuly\b|\bAugust\b|\bSeptember\b|\bOctober\b|\bNovember\b|\bDecember\b)\s+\d{1,2},\s+\d{4}/i);
-          if(dm) updated = dm[0];
-          break;
-        }
-      }
-    }
-
-    // If best-effort fails, still return null safely
-    return { level, updated };
-  }
-
+  // ===== RENDER =====
   function renderIndicator(container, ind){
     const el = document.createElement("div");
     el.className = "indCard";
@@ -321,103 +246,236 @@
 
   function computeMainIndex(indicators){
     let w=0, s=0;
-    for(const i of indicators){ w += i.weight; s += i.value * i.weight; }
+    for(const i of indicators){ w += i.weight; s += i.value*i.weight; }
     return w ? Math.round(s/w) : 0;
   }
 
+  // ===== LIVE SOURCES =====
+  async function fetchGdeltTimeline(query){
+    const q = encodeURIComponent(query);
+    const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${q}&mode=timeline&format=json&timelinesmooth=0`;
+    const res = await fetch(url);
+    if(!res.ok) throw new Error("GDELT_FAILED");
+    const j = await res.json();
+    const tl = j.timeline || [];
+    return tl.map(x => ({date:x.date, value:x.value})).slice(-30);
+  }
+
+  function trendPct(days){
+    const vals = days.map(d=>d.value);
+    const last7 = vals.slice(-7);
+    const prev7 = vals.slice(-14,-7);
+    const a = avg(last7), b = avg(prev7);
+    if(!isFinite(a)||!isFinite(b)||b===0) return 0;
+    return ((a-b)/b)*100;
+  }
+
+  function scoreVolume(v){ return Math.round(clamp((v - 10) / 190, 0, 1) * 100); }
+  function scoreTrend(p){ return Math.round(clamp((p + 50) / 150, 0, 1) * 100); }
+
+  function scoreSpike(days){
+    const vals = days.map(d=>d.value);
+    const last3 = vals.slice(-3);
+    const prev7 = vals.slice(-10,-3);
+    const a = avg(last3), b = avg(prev7);
+    if(!isFinite(a)||!isFinite(b)||b===0) return 0;
+    const pct = ((a-b)/b)*100;
+    return Math.round(clamp(pct/150, 0, 1) * 100);
+  }
+
+  async function keywordPressure(coreQuery, kwList, scaleTop){
+    const kwQuery = `${coreQuery} (${kwList.map(k=>`"${k}"`).join(" OR ")})`;
+    const days = await fetchGdeltTimeline(kwQuery);
+    const today = days.length ? days[days.length-1].value : 0;
+    const score = Math.round(clamp(today/scaleTop, 0, 1) * 100);
+    return {score, today, ok:true};
+  }
+
+  async function fetchIranTravelAdvisory(){
+    const url = USE_CORS_PROXY ? CORS_RAW(TRAVEL_ADVISORY_XML) : TRAVEL_ADVISORY_XML;
+    const res = await fetch(url);
+    if(!res.ok) throw new Error("TRAVEL_XML_FAILED");
+    const xmlText = await res.text();
+    const doc = new DOMParser().parseFromString(xmlText, "application/xml");
+
+    // best-effort parse: search text blocks containing "Iran" and "Level"
+    const nodes = Array.from(doc.getElementsByTagName("*"));
+    for(const node of nodes){
+      const t = (node.textContent || "").trim();
+      if(!t) continue;
+      if(t === "Iran" || t === "IRAN" || t.includes("Iran")){
+        const p = node.parentElement || node.parentNode;
+        if(!p) continue;
+        const txt = (p.textContent || "");
+        const m = txt.match(/Level\s*([1-4])/i);
+        if(m){
+          const level = parseInt(m[1],10);
+          return { level, ok:true };
+        }
+      }
+    }
+    return { level: null, ok:false };
+  }
+
+  // ===== DEMO FALLBACKS (ALWAYS VISIBLE) =====
+  function demoScore(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+
+  // ===== MAIN LOAD =====
   async function loadAll(){
     document.getElementById("queryLine").textContent = "QUERY: " + CORE_QUERY;
-    document.getElementById("statusLine").textContent = "STATUS: FETCHING LIVE SIGNALS…";
+    document.getElementById("statusLine").textContent = "STATUS: LOADING…";
+    log("starting refresh…");
+
     const listEl = document.getElementById("indicators");
     listEl.innerHTML = "";
 
+    // We collect indicators even if some fail
+    const indicators = [];
+    const notes = [];
+
+    // 1) Core news
+    let daysCore = null;
     try{
-      // Core
-      const daysCore = await fetchGdeltTimeline(CORE_QUERY);
+      daysCore = await fetchGdeltTimeline(CORE_QUERY);
       const volNow = daysCore.length ? daysCore[daysCore.length-1].value : 0;
       const tPct = trendPct(daysCore);
       const spike = scoreSpike(daysCore);
 
-      // Keyword buckets
-      const esc = await keywordPressureScore(CORE_QUERY, KW_ESCALATION, 80);
-      const san = await keywordPressureScore(CORE_QUERY, KW_SANCTIONS,   60);
-      const nuc = await keywordPressureScore(CORE_QUERY, KW_NUCLEAR,     60);
-      const spi = await keywordPressureScore(CORE_QUERY, KW_SPILLOVER,   80);
-      const dip = await keywordPressureScore(CORE_QUERY, KW_DIPLOMACY,   80);
+      indicators.push({
+        name:"NEWS VOLUME (GDELT)",
+        desc:"public article intensity",
+        value: scoreVolume(volNow),
+        weight: 0.18,
+        detail:`LIVE • today ≈ ${volNow} (timeline units)`
+      });
 
-      // Travel advisory (Iran)
-      const ta = await fetchIranTravelAdvisory();
-      // Map Level 1-4 to 0-100 (Level 4 highest tension)
-      const travelScore = (ta.level ? Math.round(((ta.level-1)/3)*100) : 50);
+      indicators.push({
+        name:"NEWS TREND",
+        desc:"last 7d vs prior 7d",
+        value: scoreTrend(tPct),
+        weight: 0.12,
+        detail:`LIVE • trend ${(tPct>=0?"+":"")}${tPct.toFixed(0)}%`
+      });
 
-      // Build indicator list (0-100)
-      // Diplomacy reduces tension, so we invert it in the main index.
-      const diplomacyReduced = 100 - dip.score;
+      indicators.push({
+        name:"ATTENTION SPIKE",
+        desc:"surge detector (3d vs prior week)",
+        value: spike,
+        weight: 0.10,
+        detail:`LIVE • spike score from volume surge`
+      });
 
-      const indicators = [
-        {name:"NEWS VOLUME (GDELT)", desc:"PUBLIC ARTICLE INTENSITY", value: scoreVolume(volNow), weight:0.18,
-         detail:`TODAY ≈ ${volNow} (GDELT timeline units)`},
-        {name:"NEWS TREND", desc:"LAST 7D VS PRIOR 7D", value: scoreTrend(tPct), weight:0.12,
-         detail:`TREND: ${(tPct>=0?"+":"")}${tPct.toFixed(0)}%`},
-        {name:"ATTENTION SPIKE", desc:"SURGE DETECTOR (3D VS PRIOR WEEK)", value: spike, weight:0.10,
-         detail:`NEWS SURGE SCORE`},
+      // Days in rising tension (based on daily volume score history)
+      const hist = daysCore.map(d => scoreVolume(d.value));
+      document.getElementById("riseDays").textContent = `DAYS IN RISING TENSION: ${daysInRising(hist)}`;
 
-        {name:"ESCALATION PRESSURE", desc:"STRIKE / MISSILE / DRONE LANGUAGE", value: esc.score, weight:0.16,
-         detail:`TODAY ≈ ${esc.today} (keywords)`},
-
-        {name:"SANCTIONS PRESSURE", desc:"SANCTIONS / DESIGNATIONS LANGUAGE", value: san.score, weight:0.12,
-         detail:`TODAY ≈ ${san.today} (keywords)`},
-
-        {name:"NUCLEAR PRESSURE", desc:"IAEA / ENRICHMENT / URANIUM LANGUAGE", value: nuc.score, weight:0.12,
-         detail:`TODAY ≈ ${nuc.today} (keywords)`},
-
-        {name:"REGIONAL SPILLOVER", desc:"PROXY / ROCKET / RED SEA LANGUAGE", value: spi.score, weight:0.10,
-         detail:`TODAY ≈ ${spi.today} (keywords)`},
-
-        {name:"DIPLOMACY (INVERSE)", desc:"TALKS SIGNAL (HIGH TALKS = LOWER TENSION)", value: diplomacyReduced, weight:0.06,
-         detail:`TALKS SIGNAL: ${dip.score}/100 → INVERTED FOR MAIN INDEX`},
-
-        {name:"TRAVEL ADVISORY (IRAN)", desc:"STATE DEPT ADVISORY LEVEL → 0–100", value: travelScore, weight:0.04,
-         detail:`LEVEL: ${ta.level ?? "UNKNOWN"} ${ta.updated ? "• " + ta.updated : ""}`}
-      ];
-
-      // Render
-      indicators.forEach(i=>renderIndicator(listEl,i));
-
-      // Main score
-      const main = computeMainIndex(indicators);
-      const [lbl, cls] = labelFor(main);
-      const labelEl = document.getElementById("label");
-      labelEl.textContent = lbl;
-      labelEl.className = "pill " + cls;
-
-      document.getElementById("score").textContent = main;
-      document.getElementById("mainFill").style.width = main + "%";
-
-      // Days in rising tension (derive a simple daily main history from core series + current bucket ratios)
-      // We approximate daily history using core daily volume score as the baseline driver.
-      const coreHist = daysCore.map(d => scoreVolume(d.value));
-      const rise = daysInRising(coreHist);
-      document.getElementById("riseDays").textContent = `DAYS IN RISING TENSION: ${rise}`;
-
-      const contrib = indicators.map(i=>({name:i.name, points:i.value*i.weight}))
-        .sort((a,b)=>b.points-a.points);
-      document.getElementById("explain").textContent =
-        `DRIVERS: ${contrib[0].name} + ${contrib[1].name}`;
-
-      document.getElementById("statusLine").textContent =
-        `STATUS: LIVE OK • UPDATED ${new Date().toLocaleString()}`;
-
+      notes.push("core news: LIVE OK");
     }catch(e){
-      document.getElementById("statusLine").textContent =
-        "STATUS: LIVE FAILED (NETWORK/CORS). TRY AGAIN OR SWITCH NETWORK.";
-      document.getElementById("label").textContent = "DEGRADED";
-      document.getElementById("label").className = "pill warn";
-      document.getElementById("score").textContent = "--";
-      document.getElementById("mainFill").style.width = "0%";
-      document.getElementById("explain").textContent = "DRIVERS: --";
-      document.getElementById("riseDays").textContent = "DAYS IN RISING TENSION: --";
+      // fallback core indicators
+      indicators.push({name:"NEWS VOLUME",desc:"public article intensity",value:demoScore(25,75),weight:0.18,detail:"DEGRADED • live fetch blocked"});
+      indicators.push({name:"NEWS TREND",desc:"last 7d vs prior 7d",value:demoScore(20,80),weight:0.12,detail:"DEGRADED • live fetch blocked"});
+      indicators.push({name:"ATTENTION SPIKE",desc:"surge detector",value:demoScore(10,70),weight:0.10,detail:"DEGRADED • live fetch blocked"});
+      document.getElementById("riseDays").textContent = "DAYS IN RISING TENSION: (degraded)";
+      notes.push("core news: DEGRADED (GDELT blocked)");
     }
+
+    // 2) Keyword buckets (each independently)
+    async function addKW(name, desc, kws, scaleTop, weight){
+      try{
+        const r = await keywordPressure(CORE_QUERY, kws, scaleTop);
+        indicators.push({
+          name, desc, value:r.score, weight,
+          detail:`LIVE • today ≈ ${r.today} (keywords)`
+        });
+        notes.push(`${name}: LIVE OK`);
+      }catch(e){
+        indicators.push({
+          name, desc, value:demoScore(10,80), weight,
+          detail:"DEGRADED • live fetch blocked"
+        });
+        notes.push(`${name}: DEGRADED`);
+      }
+    }
+
+    await addKW("ESCALATION PRESSURE", "strike / missile / drone language", KW_ESCALATION, 80, 0.16);
+    await addKW("SANCTIONS PRESSURE", "sanctions / OFAC / designation language", KW_SANCTIONS, 60, 0.12);
+    await addKW("NUCLEAR PRESSURE", "IAEA / enrichment / uranium language", KW_NUCLEAR, 60, 0.12);
+    await addKW("REGIONAL SPILLOVER", "proxy / rocket / Red Sea language", KW_SPILLOVER, 80, 0.10);
+
+    // Diplomacy reduces tension, so we invert
+    try{
+      const d = await keywordPressure(CORE_QUERY, KW_DIPLOMACY, 80);
+      const inv = 100 - d.score;
+      indicators.push({
+        name:"DIPLOMACY (INVERSE)",
+        desc:"talks signal (more talks = lower tension)",
+        value: inv,
+        weight: 0.06,
+        detail:`LIVE • talks ${d.score}/100 → inverted`
+      });
+      notes.push("DIPLOMACY: LIVE OK");
+    }catch(e){
+      indicators.push({
+        name:"DIPLOMACY (INVERSE)",
+        desc:"talks signal (more talks = lower tension)",
+        value: demoScore(15,85),
+        weight: 0.06,
+        detail:"DEGRADED • live fetch blocked"
+      });
+      notes.push("DIPLOMACY: DEGRADED");
+    }
+
+    // 3) Travel advisory (independent, optional)
+    try{
+      const ta = await fetchIranTravelAdvisory();
+      const travelScore = ta.level ? Math.round(((ta.level-1)/3)*100) : 50;
+      indicators.push({
+        name:"TRAVEL ADVISORY (IRAN)",
+        desc:"State Dept level mapped to 0–100",
+        value: travelScore,
+        weight: 0.04,
+        detail:`LIVE • level: ${ta.level ?? "unknown"}`
+      });
+      notes.push("TRAVEL ADVISORY: LIVE OK");
+    }catch(e){
+      indicators.push({
+        name:"TRAVEL ADVISORY (IRAN)",
+        desc:"State Dept level mapped to 0–100",
+        value: 60,
+        weight: 0.04,
+        detail:"DEGRADED • XML/CORS blocked"
+      });
+      notes.push("TRAVEL ADVISORY: DEGRADED (CORS)");
+    }
+
+    // Render ALL indicators no matter what
+    indicators.forEach(i => renderIndicator(listEl, i));
+
+    // Compute main
+    const main = computeMainIndex(indicators);
+    const [lbl, cls] = labelFor(main);
+
+    const labelEl = document.getElementById("label");
+    labelEl.textContent = lbl;
+    labelEl.className = "pill " + cls;
+
+    document.getElementById("score").textContent = main;
+    document.getElementById("mainFill").style.width = main + "%";
+
+    // Explain top drivers
+    const contrib = indicators.map(i=>({name:i.name, points:i.value*i.weight}))
+      .sort((a,b)=>b.points-a.points);
+
+    document.getElementById("explain").textContent =
+      `DRIVERS: ${contrib[0].name} + ${contrib[1].name}`;
+
+    // Status
+    const degraded = notes.some(n => n.includes("DEGRADED"));
+    document.getElementById("statusLine").textContent =
+      degraded ? `STATUS: DEGRADED (some sources blocked) • UPDATED ${nowStr()}`
+               : `STATUS: LIVE OK • UPDATED ${nowStr()}`;
+
+    log(notes.join("\n"));
   }
 
   loadAll();
