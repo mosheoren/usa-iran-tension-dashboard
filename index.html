@@ -2,14 +2,19 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NEON GEO-TENSION // USA ↔ IRAN</title>
+<title>NEON TENSION // USA ↔ IRAN</title>
 <style>
   :root{
-    --bg:#05010a; --text: rgba(220,255,245,0.92);
-    --muted: rgba(220,255,245,0.62); --muted2: rgba(220,255,245,0.42);
+    --bg:#05010a;
+    --text: rgba(220,255,245,0.92);
+    --muted: rgba(220,255,245,0.62);
+    --muted2: rgba(220,255,245,0.42);
     --grid: rgba(0,255,180,0.06);
-    --neonA:#00ffb4; --neonB:#ff00ff; --neonC:#00aaff;
-    --warn:#ffe066; --bad:#ff4d6d;
+    --neonA:#00ffb4;
+    --neonB:#ff00ff;
+    --neonC:#00aaff;
+    --warn:#ffe066;
+    --bad:#ff4d6d;
   }
   *{ box-sizing:border-box; }
   html,body{ margin:0; padding:0; background:var(--bg); color:var(--text); }
@@ -40,8 +45,10 @@
   }
   .wrap{ max-width: 980px; margin: 0 auto; }
   .row{ display:flex; justify-content:space-between; gap:12px; align-items:flex-start; flex-wrap:wrap; }
-  h1{ margin:0; font-size: 22px; letter-spacing: 1px; text-shadow: 0 0 10px rgba(0,255,180,0.25); }
-  .small{ color:var(--muted); font-size: 12px; margin-top: 6px; line-height: 1.35; }
+
+  h1{ margin:0; font-size:22px; letter-spacing:1px; text-shadow: 0 0 10px rgba(0,255,180,0.25); }
+  .small{ color:var(--muted); font-size:12px; margin-top:6px; line-height:1.35; }
+
   .btn{
     appearance:none; border: 1px solid rgba(0,255,180,0.35);
     background: rgba(0,255,180,0.06); color: var(--text);
@@ -65,13 +72,12 @@
     background: radial-gradient(circle at 30% 30%, rgba(0,255,180,0.55), transparent 60%);
     transform: rotate(20deg); opacity:0.18;
   }
-
-  .title{ font-weight: 900; letter-spacing: 0.8px; text-transform: uppercase; }
-  .muted{ color: var(--muted); font-size:12px; margin-top:4px; line-height:1.35; }
+  .title{ font-weight:900; letter-spacing:0.8px; text-transform:uppercase; }
+  .muted{ color:var(--muted); font-size:12px; margin-top:4px; line-height:1.35; }
 
   .pill{
-    padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 900;
-    letter-spacing: 0.8px; text-transform: uppercase;
+    padding:6px 10px; border-radius:999px; font-size:12px; font-weight:900;
+    letter-spacing:0.8px; text-transform:uppercase;
     border: 1px solid rgba(0,255,180,0.30);
     background: rgba(0,255,180,0.06);
     box-shadow: inset 0 0 12px rgba(0,255,180,0.10);
@@ -81,12 +87,12 @@
   .bad{ color: var(--bad); border-color: rgba(255,77,109,0.45) !important; }
 
   .big{
-    font-size: 46px; font-weight: 950; letter-spacing: -1px; line-height: 1;
+    font-size:46px; font-weight:950; letter-spacing:-1px; line-height:1;
     text-shadow: 0 0 18px rgba(0,255,180,0.18), 0 0 28px rgba(0,170,255,0.12);
   }
   .bar{
-    height: 12px; background: rgba(0,255,180,0.08); border: 1px solid rgba(0,255,180,0.20);
-    border-radius: 999px; overflow:hidden; margin-top: 10px;
+    height:12px; background: rgba(0,255,180,0.08); border: 1px solid rgba(0,255,180,0.20);
+    border-radius:999px; overflow:hidden; margin-top:10px;
     box-shadow: inset 0 0 18px rgba(0,255,180,0.08);
   }
   .fill{
@@ -108,18 +114,16 @@
   .indVal{ font-weight:950; }
   .indSub{ color:var(--muted); font-size:12px; margin-top:4px; line-height:1.35; }
   .indBar{
-    height: 10px; background: rgba(0,255,180,0.08); border: 1px solid rgba(0,255,180,0.18);
-    border-radius: 999px; overflow:hidden; margin-top: 10px;
+    height:10px; background: rgba(0,255,180,0.08); border: 1px solid rgba(0,255,180,0.18);
+    border-radius:999px; overflow:hidden; margin-top:10px;
   }
   .indFill{
     height:100%; width:0%;
     background: linear-gradient(90deg, #00ffb4, #00aaff, #ff00ff);
     box-shadow: 0 0 16px rgba(255,0,255,0.10);
   }
-  .hr{ margin-top:10px; height:1px; background: linear-gradient(90deg, transparent, rgba(0,255,180,0.25), transparent); }
-  .blink{ animation: blink 1.3s infinite; }
-  @keyframes blink { 0%,50%{opacity:1} 51%,100%{opacity:0.55} }
 
+  .hr{ margin-top:10px; height:1px; background: linear-gradient(90deg, transparent, rgba(0,255,180,0.25), transparent); }
   .log{
     font-size:12px;
     color:rgba(220,255,245,0.78);
@@ -139,10 +143,9 @@
 <div class="wrap">
   <div class="row">
     <div>
-      <h1>NEON GEO-TENSION // USA ↔ IRAN</h1>
+      <h1>NEON TENSION // USA ↔ IRAN</h1>
       <div class="small">
-        ALL INDICATORS ALWAYS VISIBLE • LIVE WHERE POSSIBLE <span class="blink">▮</span><br>
-        (TENSION MONITORING ONLY — NOT MILITARY TIMING/PREDICTION)
+        One-page indicators (0–100) → Main Index (0–100) • Live from GDELT • Auto refresh optional
       </div>
     </div>
     <button class="btn" onclick="loadAll()">REFRESH</button>
@@ -153,7 +156,7 @@
       <div class="row">
         <div>
           <div class="title">MAIN TENSION INDEX</div>
-          <div class="muted">WEIGHTED BLEND OF ALL SMALL INDICATORS</div>
+          <div class="muted">Weighted blend of all indicators below</div>
         </div>
         <div class="pill" id="label">LOADING…</div>
       </div>
@@ -161,14 +164,12 @@
       <div style="margin-top:10px" class="big">
         <span id="score">--</span><span style="font-size:16px;font-weight:900;color:var(--muted)">/100</span>
       </div>
-
       <div class="bar"><div class="fill" id="mainFill"></div></div>
 
       <div class="hr"></div>
       <div class="muted" style="margin-top:10px" id="explain">DRIVERS: …</div>
       <div class="muted" style="margin-top:6px" id="riseDays">DAYS IN RISING TENSION: --</div>
       <div class="muted" style="margin-top:6px;color:var(--muted2)" id="statusLine">STATUS: …</div>
-
       <div class="log" id="logBox">LOG: ready</div>
     </div>
 
@@ -177,38 +178,52 @@
       <div class="muted" id="queryLine">QUERY: …</div>
       <div class="indGrid" id="indicators"></div>
     </div>
+
+    <div class="card">
+      <div class="title">LATEST HEADLINES</div>
+      <div class="muted">Live top matches (GDELT ArtList)</div>
+      <div class="log" id="headlineBox">Headlines loading…</div>
+    </div>
   </div>
 </div>
 
 <script>
-  // ===== CONFIG =====
+  // ===== SETTINGS YOU CAN EDIT =====
   const CORE_QUERY = '"United States" Iran';
 
-  const KW_ESCALATION = ["strike","retaliation","missile","drone","airstrike","attack","bombardment"];
-  const KW_SANCTIONS  = ["sanction","designated","designation","OFAC","Treasury","blacklist"];
-  const KW_NUCLEAR    = ["IAEA","enrichment","uranium","nuclear","centrifuge","JCPOA"];
-  const KW_SPILLOVER  = ["militia","rocket","proxy","Red Sea","Houthis","Hezbollah","Syria","Iraq"];
-  const KW_DIPLOMACY  = ["talks","negotiations","diplomacy","agreement","deal","dialogue","ceasefire"];
+  // Buckets (news-based) that influence tension
+  const BUCKETS = [
+    { key:"volume",   name:"NEWS VOLUME",           desc:"Public attention level",             weight:0.16 },
+    { key:"trend",    name:"NEWS TREND",            desc:"7d vs prior 7d",                     weight:0.10 },
+    { key:"spike",    name:"ATTENTION SPIKE",       desc:"3d surge vs prior week",            weight:0.10 },
 
-  // Travel advisory XML: often blocked by browser CORS; we use a proxy.
-  const TRAVEL_ADVISORY_XML =
-    "https://cadatacatalog.state.gov/dataset/4a387c35-29cb-4902-b91d-3da0dc02e4b2/resource/4c727464-8e6f-4536-b0a5-0a343dc6c7ff/download/traveladvisory.xml";
+    { key:"escalate", name:"ESCALATION LANGUAGE",   desc:"strike/missile/drone/attack",       weight:0.16,
+      kws:["strike","retaliation","missile","drone","airstrike","attack","bombardment"] },
 
-  const USE_CORS_PROXY = true;
-  const CORS_RAW = (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+    { key:"nuclear",  name:"NUCLEAR PRESSURE",      desc:"IAEA/enrichment/uranium",           weight:0.14,
+      kws:["IAEA","enrichment","uranium","nuclear","centrifuge","JCPOA"] },
+
+    { key:"sanction", name:"SANCTIONS PRESSURE",    desc:"OFAC/sanctions/designations",       weight:0.12,
+      kws:["sanction","OFAC","Treasury","designated","designation","blacklist"] },
+
+    { key:"spill",    name:"REGIONAL SPILLOVER",    desc:"proxy/rocket/Red Sea",              weight:0.12,
+      kws:["militia","rocket","proxy","Red Sea","Houthis","Hezbollah","Syria","Iraq"] },
+
+    // diplomacy reduces tension → we invert it (100 - talksScore)
+    { key:"diplomacy",name:"DIPLOMACY (INVERSE)",   desc:"more talks = lower tension",        weight:0.10,
+      kws:["talks","negotiations","diplomacy","agreement","deal","dialogue","ceasefire"], invert:true },
+  ];
 
   const AUTO_REFRESH = true;
   const REFRESH_MS = 5 * 60 * 1000;
+  const SOURCELANG = "eng"; // keep stable for now
+  const MAX_HEADLINES = 10;
 
-  // ===== UTIL =====
+  // ===== HELPERS =====
   function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
   function avg(arr){ return arr.reduce((a,b)=>a+b,0)/Math.max(1,arr.length); }
   function nowStr(){ return new Date().toLocaleString(); }
-
-  function log(msg){
-    const el = document.getElementById("logBox");
-    el.textContent = `LOG @ ${nowStr()}\n` + msg;
-  }
+  function demo(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
 
   function labelFor(s){
     if(s<25) return ["LOW","ok"];
@@ -216,7 +231,6 @@
     if(s<75) return ["ELEVATED","warn"];
     return ["HIGH","bad"];
   }
-
   function daysInRising(history){
     let d = 0;
     for(let i=history.length-1; i>0; i--){
@@ -226,39 +240,29 @@
     return d;
   }
 
-  // ===== RENDER =====
-  function renderIndicator(container, ind){
-    const el = document.createElement("div");
-    el.className = "indCard";
-    el.innerHTML = `
-      <div class="indTop">
-        <div>
-          <div class="indName">${ind.name}</div>
-          <div class="indSub">${ind.desc}</div>
-        </div>
-        <div class="indVal">${ind.value}/100</div>
-      </div>
-      <div class="indBar"><div class="indFill" style="width:${ind.value}%"></div></div>
-      <div class="indSub" style="margin-top:8px;color:rgba(220,255,245,.78)">${ind.detail}</div>
-    `;
-    container.appendChild(el);
+  function log(lines){
+    document.getElementById("logBox").textContent = `LOG @ ${nowStr()}\n` + lines.join("\n");
   }
 
-  function computeMainIndex(indicators){
-    let w=0, s=0;
-    for(const i of indicators){ w += i.weight; s += i.value*i.weight; }
-    return w ? Math.round(s/w) : 0;
-  }
-
-  // ===== LIVE SOURCES =====
-  async function fetchGdeltTimeline(query){
-    const q = encodeURIComponent(query);
+  // ===== GDELT =====
+  async function gdeltTimeline(query){
+    const q = encodeURIComponent(query + ` sourcelang:${SOURCELANG}`);
     const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${q}&mode=timeline&format=json&timelinesmooth=0`;
     const res = await fetch(url);
-    if(!res.ok) throw new Error("GDELT_FAILED");
+    if(!res.ok) throw new Error("GDELT_TIMELINE_FAILED");
     const j = await res.json();
     const tl = j.timeline || [];
     return tl.map(x => ({date:x.date, value:x.value})).slice(-30);
+  }
+
+  async function gdeltArtList(query){
+    const q = encodeURIComponent(query + ` sourcelang:${SOURCELANG}`);
+    // ArtList is easiest; even if it returns HTML sometimes, JSON is widely supported
+    const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${q}&mode=artlist&format=json&sort=hybridrel&maxrecords=${MAX_HEADLINES}`;
+    const res = await fetch(url);
+    if(!res.ok) throw new Error("GDELT_ARTLIST_FAILED");
+    const j = await res.json();
+    return j.articles || [];
   }
 
   function trendPct(days){
@@ -272,7 +276,6 @@
 
   function scoreVolume(v){ return Math.round(clamp((v - 10) / 190, 0, 1) * 100); }
   function scoreTrend(p){ return Math.round(clamp((p + 50) / 150, 0, 1) * 100); }
-
   function scoreSpike(days){
     const vals = days.map(d=>d.value);
     const last3 = vals.slice(-3);
@@ -285,176 +288,114 @@
 
   async function keywordPressure(coreQuery, kwList, scaleTop){
     const kwQuery = `${coreQuery} (${kwList.map(k=>`"${k}"`).join(" OR ")})`;
-    const days = await fetchGdeltTimeline(kwQuery);
+    const days = await gdeltTimeline(kwQuery);
     const today = days.length ? days[days.length-1].value : 0;
     const score = Math.round(clamp(today/scaleTop, 0, 1) * 100);
-    return {score, today, ok:true};
+    return {score, today};
   }
 
-  async function fetchIranTravelAdvisory(){
-    const url = USE_CORS_PROXY ? CORS_RAW(TRAVEL_ADVISORY_XML) : TRAVEL_ADVISORY_XML;
-    const res = await fetch(url);
-    if(!res.ok) throw new Error("TRAVEL_XML_FAILED");
-    const xmlText = await res.text();
-    const doc = new DOMParser().parseFromString(xmlText, "application/xml");
-
-    // best-effort parse: search text blocks containing "Iran" and "Level"
-    const nodes = Array.from(doc.getElementsByTagName("*"));
-    for(const node of nodes){
-      const t = (node.textContent || "").trim();
-      if(!t) continue;
-      if(t === "Iran" || t === "IRAN" || t.includes("Iran")){
-        const p = node.parentElement || node.parentNode;
-        if(!p) continue;
-        const txt = (p.textContent || "");
-        const m = txt.match(/Level\s*([1-4])/i);
-        if(m){
-          const level = parseInt(m[1],10);
-          return { level, ok:true };
-        }
-      }
-    }
-    return { level: null, ok:false };
+  // ===== UI RENDER =====
+  function renderIndicator(container, ind){
+    const el = document.createElement("div");
+    el.className = "indCard";
+    el.innerHTML = `
+      <div class="indTop">
+        <div>
+          <div class="indName">${ind.name} <span style="color:var(--muted2)">[${ind.status}]</span></div>
+          <div class="indSub">${ind.desc}</div>
+        </div>
+        <div class="indVal">${ind.value}/100</div>
+      </div>
+      <div class="indBar"><div class="indFill" style="width:${ind.value}%"></div></div>
+      <div class="indSub" style="margin-top:8px;color:rgba(220,255,245,.78)">${ind.detail}</div>
+    `;
+    container.appendChild(el);
   }
 
-  // ===== DEMO FALLBACKS (ALWAYS VISIBLE) =====
-  function demoScore(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+  function computeMain(indicators){
+    let w=0, s=0;
+    for(const i of indicators){ w += i.weight; s += i.value*i.weight; }
+    return w ? Math.round(s/w) : 0;
+  }
 
   // ===== MAIN LOAD =====
   async function loadAll(){
     document.getElementById("queryLine").textContent = "QUERY: " + CORE_QUERY;
     document.getElementById("statusLine").textContent = "STATUS: LOADING…";
-    log("starting refresh…");
 
     const listEl = document.getElementById("indicators");
     listEl.innerHTML = "";
 
-    // We collect indicators even if some fail
-    const indicators = [];
     const notes = [];
+    const inds = [];
 
-    // 1) Core news
-    let daysCore = null;
+    // Core timeline (drives volume/trend/spike + rising days)
+    let coreDays = null;
     try{
-      daysCore = await fetchGdeltTimeline(CORE_QUERY);
-      const volNow = daysCore.length ? daysCore[daysCore.length-1].value : 0;
-      const tPct = trendPct(daysCore);
-      const spike = scoreSpike(daysCore);
+      coreDays = await gdeltTimeline(CORE_QUERY);
+      const volNow = coreDays.length ? coreDays[coreDays.length-1].value : 0;
+      const tPct = trendPct(coreDays);
+      const spike = scoreSpike(coreDays);
 
-      indicators.push({
-        name:"NEWS VOLUME (GDELT)",
-        desc:"public article intensity",
-        value: scoreVolume(volNow),
-        weight: 0.18,
-        detail:`LIVE • today ≈ ${volNow} (timeline units)`
-      });
-
-      indicators.push({
-        name:"NEWS TREND",
-        desc:"last 7d vs prior 7d",
-        value: scoreTrend(tPct),
-        weight: 0.12,
-        detail:`LIVE • trend ${(tPct>=0?"+":"")}${tPct.toFixed(0)}%`
-      });
-
-      indicators.push({
-        name:"ATTENTION SPIKE",
-        desc:"surge detector (3d vs prior week)",
-        value: spike,
-        weight: 0.10,
-        detail:`LIVE • spike score from volume surge`
-      });
-
-      // Days in rising tension (based on daily volume score history)
-      const hist = daysCore.map(d => scoreVolume(d.value));
+      // Rising days from volume history (stable + understandable)
+      const hist = coreDays.map(d => scoreVolume(d.value));
       document.getElementById("riseDays").textContent = `DAYS IN RISING TENSION: ${daysInRising(hist)}`;
 
-      notes.push("core news: LIVE OK");
+      // Add to indicator list
+      inds.push({name:"NEWS VOLUME", desc:"Public attention level", value:scoreVolume(volNow), weight:0.16, status:"LIVE",
+        detail:`today ≈ ${volNow} (timeline units)`});
+
+      inds.push({name:"NEWS TREND", desc:"7d vs prior 7d", value:scoreTrend(tPct), weight:0.10, status:"LIVE",
+        detail:`trend ${(tPct>=0?"+":"")}${tPct.toFixed(0)}%`});
+
+      inds.push({name:"ATTENTION SPIKE", desc:"3d surge vs prior week", value:spike, weight:0.10, status:"LIVE",
+        detail:`surge score from volume jump`});
+
+      notes.push("core: LIVE OK");
     }catch(e){
-      // fallback core indicators
-      indicators.push({name:"NEWS VOLUME",desc:"public article intensity",value:demoScore(25,75),weight:0.18,detail:"DEGRADED • live fetch blocked"});
-      indicators.push({name:"NEWS TREND",desc:"last 7d vs prior 7d",value:demoScore(20,80),weight:0.12,detail:"DEGRADED • live fetch blocked"});
-      indicators.push({name:"ATTENTION SPIKE",desc:"surge detector",value:demoScore(10,70),weight:0.10,detail:"DEGRADED • live fetch blocked"});
-      document.getElementById("riseDays").textContent = "DAYS IN RISING TENSION: (degraded)";
-      notes.push("core news: DEGRADED (GDELT blocked)");
+      // Still show them, always
+      document.getElementById("riseDays").textContent = "DAYS IN RISING TENSION: (demo)";
+      inds.push({name:"NEWS VOLUME", desc:"Public attention level", value:demo(25,75), weight:0.16, status:"DEMO",
+        detail:`live blocked`});
+      inds.push({name:"NEWS TREND", desc:"7d vs prior 7d", value:demo(20,80), weight:0.10, status:"DEMO",
+        detail:`live blocked`});
+      inds.push({name:"ATTENTION SPIKE", desc:"3d surge vs prior week", value:demo(10,70), weight:0.10, status:"DEMO",
+        detail:`live blocked`});
+      notes.push("core: DEMO (GDELT blocked)");
     }
 
-    // 2) Keyword buckets (each independently)
-    async function addKW(name, desc, kws, scaleTop, weight){
+    // Keyword buckets (each independent)
+    async function addBucket(b){
+      if(!b.kws){
+        // already handled by core (volume/trend/spike)
+        return;
+      }
       try{
-        const r = await keywordPressure(CORE_QUERY, kws, scaleTop);
-        indicators.push({
-          name, desc, value:r.score, weight,
-          detail:`LIVE • today ≈ ${r.today} (keywords)`
-        });
-        notes.push(`${name}: LIVE OK`);
+        const r = await keywordPressure(CORE_QUERY, b.kws, 80);
+        let val = r.score;
+        if(b.invert) val = 100 - val;
+        inds.push({name:b.name, desc:b.desc, value:val, weight:b.weight, status:"LIVE",
+          detail:`keywords today ≈ ${r.today}`});
+        notes.push(`${b.key}: LIVE OK`);
       }catch(e){
-        indicators.push({
-          name, desc, value:demoScore(10,80), weight,
-          detail:"DEGRADED • live fetch blocked"
-        });
-        notes.push(`${name}: DEGRADED`);
+        inds.push({name:b.name, desc:b.desc, value:demo(10,85), weight:b.weight, status:"DEMO",
+          detail:`live blocked`});
+        notes.push(`${b.key}: DEMO`);
       }
     }
 
-    await addKW("ESCALATION PRESSURE", "strike / missile / drone language", KW_ESCALATION, 80, 0.16);
-    await addKW("SANCTIONS PRESSURE", "sanctions / OFAC / designation language", KW_SANCTIONS, 60, 0.12);
-    await addKW("NUCLEAR PRESSURE", "IAEA / enrichment / uranium language", KW_NUCLEAR, 60, 0.12);
-    await addKW("REGIONAL SPILLOVER", "proxy / rocket / Red Sea language", KW_SPILLOVER, 80, 0.10);
-
-    // Diplomacy reduces tension, so we invert
-    try{
-      const d = await keywordPressure(CORE_QUERY, KW_DIPLOMACY, 80);
-      const inv = 100 - d.score;
-      indicators.push({
-        name:"DIPLOMACY (INVERSE)",
-        desc:"talks signal (more talks = lower tension)",
-        value: inv,
-        weight: 0.06,
-        detail:`LIVE • talks ${d.score}/100 → inverted`
-      });
-      notes.push("DIPLOMACY: LIVE OK");
-    }catch(e){
-      indicators.push({
-        name:"DIPLOMACY (INVERSE)",
-        desc:"talks signal (more talks = lower tension)",
-        value: demoScore(15,85),
-        weight: 0.06,
-        detail:"DEGRADED • live fetch blocked"
-      });
-      notes.push("DIPLOMACY: DEGRADED");
+    // Add remaining buckets (skip the first 3 which are handled)
+    for(const b of BUCKETS){
+      if(["volume","trend","spike"].includes(b.key)) continue;
+      await addBucket(b);
     }
 
-    // 3) Travel advisory (independent, optional)
-    try{
-      const ta = await fetchIranTravelAdvisory();
-      const travelScore = ta.level ? Math.round(((ta.level-1)/3)*100) : 50;
-      indicators.push({
-        name:"TRAVEL ADVISORY (IRAN)",
-        desc:"State Dept level mapped to 0–100",
-        value: travelScore,
-        weight: 0.04,
-        detail:`LIVE • level: ${ta.level ?? "unknown"}`
-      });
-      notes.push("TRAVEL ADVISORY: LIVE OK");
-    }catch(e){
-      indicators.push({
-        name:"TRAVEL ADVISORY (IRAN)",
-        desc:"State Dept level mapped to 0–100",
-        value: 60,
-        weight: 0.04,
-        detail:"DEGRADED • XML/CORS blocked"
-      });
-      notes.push("TRAVEL ADVISORY: DEGRADED (CORS)");
-    }
+    // Render all indicators
+    inds.forEach(i => renderIndicator(listEl, i));
 
-    // Render ALL indicators no matter what
-    indicators.forEach(i => renderIndicator(listEl, i));
-
-    // Compute main
-    const main = computeMainIndex(indicators);
+    // Main index
+    const main = computeMain(inds);
     const [lbl, cls] = labelFor(main);
-
     const labelEl = document.getElementById("label");
     labelEl.textContent = lbl;
     labelEl.className = "pill " + cls;
@@ -462,20 +403,34 @@
     document.getElementById("score").textContent = main;
     document.getElementById("mainFill").style.width = main + "%";
 
-    // Explain top drivers
-    const contrib = indicators.map(i=>({name:i.name, points:i.value*i.weight}))
-      .sort((a,b)=>b.points-a.points);
+    // Drivers
+    const contrib = inds.map(i=>({name:i.name, pts:i.value*i.weight}))
+      .sort((a,b)=>b.pts-a.pts);
+    document.getElementById("explain").textContent = `DRIVERS: ${contrib[0].name} + ${contrib[1].name}`;
 
-    document.getElementById("explain").textContent =
-      `DRIVERS: ${contrib[0].name} + ${contrib[1].name}`;
+    // Headlines (independent)
+    try{
+      const arts = await gdeltArtList(CORE_QUERY);
+      if(!arts.length){
+        document.getElementById("headlineBox").textContent = "No headlines returned.";
+      }else{
+        const lines = arts.map(a => `• ${a.title || "Untitled"}\n  ${a.url || ""}`).join("\n\n");
+        document.getElementById("headlineBox").textContent = lines;
+      }
+      notes.push("headlines: LIVE OK");
+    }catch(e){
+      document.getElementById("headlineBox").textContent =
+        "Headlines blocked on this network. (Indicators still work.)";
+      notes.push("headlines: DEMO");
+    }
 
-    // Status
-    const degraded = notes.some(n => n.includes("DEGRADED"));
+    // Status + log
+    const degraded = inds.some(i=>i.status==="DEMO");
     document.getElementById("statusLine").textContent =
-      degraded ? `STATUS: DEGRADED (some sources blocked) • UPDATED ${nowStr()}`
+      degraded ? `STATUS: PARTIAL LIVE (some blocked) • UPDATED ${nowStr()}`
                : `STATUS: LIVE OK • UPDATED ${nowStr()}`;
 
-    log(notes.join("\n"));
+    log(notes);
   }
 
   loadAll();
